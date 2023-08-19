@@ -255,7 +255,7 @@
             image.style.display="none"
           });
           //
-          img.style = "position: fixed;width: 100%;z-index: 20;";
+          img.style = "position: fixed;width: min(100vw , 100vh);z-index: 20;";
           document.querySelector(".imgbackbutton").style = "display:grid";
           document.querySelector(".imgdeletebutton").style = "display:grid";
         });
@@ -274,6 +274,9 @@
       // delete image
       function deleteimage(){
         imgtodelete.remove()
+        setTimeout(()=>{
+          allimages()
+        },1000)
       }
       // show gallery
       let showgalleyflag = true;
