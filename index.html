@@ -119,17 +119,21 @@
         width: 300px;
         aspect-ratio: 4/3;
       }
-      .imgbackbutton {
+      .imgbackbutton,.imgdeletebutton {
         position: fixed;
         z-index: 30;
-        top: 20px;
-        left: 20px;
+        top: 6px;
+        left: 11px;
         height: 50px;
         aspect-ratio: 1;
         border-radius: 50%;
         background-color: rgb(0, 0, 0);
         place-content: center;
         display: none;
+      }
+      .imgdeletebutton{
+        left: calc(50% - 25px);
+        top: calc(90% - 25px);
       }
       .camerapreview {
         position: absolute;
@@ -147,15 +151,8 @@
         height: 100dvh;
         width: 100vw;
         pointer-events: none;
-      }
-      @keyframes shutter {
-        0% {
-        }
-        50% {
-          background-color: rgba(255, 255, 255, 0.6);
-        }
-        100% {
-        }
+        background-color: rgba(255, 255, 255, 0.507);
+        display: none;
       }
     </style>
   </head>
@@ -175,7 +172,10 @@
         </div>
         <div class="gallerybottom">
           <span class="imgbackbutton" onclick="allimages()">
-            <i class="fa-solid fa-arrow-left-long" style="color: #ffffff;"></i>
+            <i class="fa-solid fa-arrow-left-long" style="color: #ffffff"></i>
+          </span>
+          <span class="imgdeletebutton" onclick="deleteimage()">
+            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
           </span>
         </div>
       </button>
@@ -218,6 +218,13 @@
       camerapreview.height = (camerapreview.width * 3) / 4;
 
       function captureFrame() {
+        // shutter anim
+        document.querySelector(".shutteranim").style = "display: block";
+        setTimeout(() => {
+          document.querySelector(".shutteranim").style = "display: none";
+        }, 50);
+
+        // captureimage
         context.drawImage(
           videoelem,
           0,
@@ -227,33 +234,47 @@
         );
         images.push(camerapreview.toDataURL("image/jpg"));
         showimages();
-        // shutter anim
-        document.querySelector(".shutteranim").style =
-          "animation: shutter 0.3s linear ;";
-        setTimeout(() => {
-          document.querySelector(".shutteranim").style = "";
-        }, 500);
       }
-
+      //
+      let imgtodelete;
       function showimages() {
         let img = document.createElement("img");
         img.src = images[images.length - 1];
         img.onload = () => {
-          document.querySelector(".gallerybottom").appendChild(img);
+          document
+            .querySelector(".gallerybottom")
+            .insertBefore(
+              img,
+              document.querySelector(".gallerybottom").firstChild
+            );
         };
         img.addEventListener("click", () => {
+          imgtodelete = img;
+          // hiding all the images to show a single image
+          document.querySelectorAll("img").forEach((image) => {
+            image.style.display="none"
+          });
+          //
           img.style = "position: fixed;width: 100%;z-index: 20;";
           document.querySelector(".imgbackbutton").style = "display:grid";
+          document.querySelector(".imgdeletebutton").style = "display:grid";
         });
       }
       // back to all images button
       function allimages() {
-        document.querySelectorAll("img").forEach(image=>{
-          image.style="position: relative;width: 300px;z-index: 0;"
-        })
+        document.querySelectorAll("img").forEach((image) => {
+          image.style.position= "relative"
+          image.style.width= "300px";
+          image.style.zIndex= "0"
+          image.style.display="block"
+        });
         document.querySelector(".imgbackbutton").style = "display:none";
+        document.querySelector(".imgdeletebutton").style = "display:none";
       }
-
+      // delete image
+      function deleteimage(){
+        imgtodelete.remove()
+      }
       // show gallery
       let showgalleyflag = true;
       function showgallery() {
