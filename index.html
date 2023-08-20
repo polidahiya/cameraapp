@@ -47,6 +47,7 @@
         height: 100dvh;
         display: flex;
         justify-content: center;
+        align-items: center;
         position: relative;
         overflow: hidden;
       }
@@ -218,7 +219,6 @@
         //
         camera = !camera;
         stream();
-        console.log(camera);
       }
       //  start camera
       function stream() {
@@ -231,7 +231,7 @@
           });
       }
       stream();
-
+     
       // canvas preview
       const camerapreview = document.querySelector(".camerapreview");
       const context = camerapreview.getContext("2d");
