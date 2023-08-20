@@ -218,10 +218,12 @@
         });
         //
         camera = !camera;
-        if(camera){
-          document.querySelector(".videooutput").style="transform: rotateY(180deg);"
-        }else{
-          document.querySelector(".videooutput").style="transform: rotateY(0deg);"
+        if (camera) {
+          document.querySelector(".videooutput").style =
+            "transform: rotateY(180deg);";
+        } else {
+          document.querySelector(".videooutput").style =
+            "transform: rotateY(0deg);";
         }
         stream();
       }
@@ -236,7 +238,7 @@
           });
       }
       stream();
-     
+
       // canvas preview
       const camerapreview = document.querySelector(".camerapreview");
       const context = camerapreview.getContext("2d");
@@ -251,13 +253,22 @@
         }, 50);
 
         // captureimage
-        context.drawImage(
-          videoelem,
-          0,
-          0,
-          camerapreview.width,
-          camerapreview.height
-        );
+        if (camera) {
+          context.drawImage(
+            videoelem,
+            0,
+            0,
+            camerapreview.width,
+            camerapreview.height
+          );
+        } else {
+          context.clearRect(0, 0, camerapreview.width, camerapreview.height);
+          context.save();
+          context.scale(-1, 1);
+          context.translate(-camerapreview.width, 0);
+          context.drawImage(videoelem, 0, 0, camerapreview.width, camerapreview.height);
+          context.restore();
+        }
         images.push(camerapreview.toDataURL("image/jpg"));
         showimages();
       }
@@ -307,7 +318,7 @@
       // show gallery
       let showgalleyflag = true;
       function showgallery() {
-        let allimg=document.querySelectorAll("img")
+        let allimg = document.querySelectorAll("img");
         if (showgalleyflag) {
           gallery.style = ` 
                     border-radius: 0;
