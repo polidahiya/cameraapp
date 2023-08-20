@@ -180,7 +180,7 @@
   <body>
     <div class="loader"></div>
     <div class="camera">
-      <video src="" autoplay playsinline></video>
+      <video class="videooutput" src="" autoplay playsinline></video>
       <button onclick="changecamera()">
         <i class="fa-solid fa-repeat" style="color: #000000"></i>
       </button>
@@ -218,6 +218,11 @@
         });
         //
         camera = !camera;
+        if(camera){
+          document.querySelector(".videooutput").style="transform: rotateY(180deg);"
+        }else{
+          document.querySelector(".videooutput").style="transform: rotateY(0deg);"
+        }
         stream();
       }
       //  start camera
