@@ -19,6 +19,21 @@
         margin: 0;
         overflow: hidden;
       }
+      /* loader */
+      .loader{
+        height: 100dvh;
+        width: 100vw;
+        position: fixed;
+        pointer-events: none;
+        background: url(camera\ app.jpg);
+        background-position: center;
+        background-size: cover;
+        z-index: 999;
+      }
+      @keyframes hide{
+        0%{opacity: 1;}
+        100%{opacity: 0;}
+      }
       ::-webkit-scrollbar {
         width: 0;
         height: 0;
@@ -157,6 +172,7 @@
     </style>
   </head>
   <body>
+    <div class="loader"></div>
     <div class="camera">
       <video src="" autoplay playsinline></video>
       <button onclick="changecamera()">
@@ -320,6 +336,12 @@
           document.querySelector(".backbutton").innerHTML = "";
           showgalleyflag = !showgalleyflag;
         }
+      }
+      // loader
+      document.body.onload=()=>{
+        setTimeout(()=>{
+          document.querySelector(".loader").style="animation: hide 0.5s forwards;"
+        },1500)
       }
     </script>
   </body>
